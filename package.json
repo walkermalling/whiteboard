@@ -1,0 +1,17 @@
+{
+  "name": "whiteboard",
+  "version": "0.0.1",
+  "description": "A collection of whiteboard solutions in module form",
+  "main": "whiteboard.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/walkermalling/whiteboard.git"
+  },
+  "author": "Walker Malling",
+  "license": "MIT",
+  "homepage": "https://github.com/walkermalling/whiteboard",
+  "dependencies": {
+  },
+  "devDependencies": {
+    
+}
