@@ -10,8 +10,11 @@
   "author": "Walker Malling",
   "license": "MIT",
   "homepage": "https://github.com/walkermalling/whiteboard",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
-    
+    "app-root-path": "^0.1.0",
+    "automocha": "^1.0.0",
+    "chai": "^1.9.1",
+    "mocha": "^1.21.4"
+  }
 }

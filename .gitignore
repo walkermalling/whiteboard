@@ -1,5 +1,6 @@
 node_modules/
 bower_components/
+test/automocha/
 .DS_Store
 *.sublime-project
 *.sublime-workspace
