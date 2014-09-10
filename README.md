@@ -6,7 +6,7 @@ Particularly Fun Whiteboard Problems and Solutions with Tests
 ### How (A)
 
 1. `npm install`
-2. make a link to the test you want to run: `ln src/stair-combo/stair-combo-test.js test/automocha`
+2. make a link to the test you want to run: `ln src/stairs-combo/stairs-combo-test.js test/automocha`
 3. run automocha `automocha`
 4. fiddle withe the test to explore the solution
 
