@@ -14,15 +14,7 @@ describe('Get first Repeating Character',function(){
 
   it('is ok', function(){
     expect(firstRepeat).to.be.ok;
-    expect(typeof firstRepeat === 'function').to.eql(true);
-  });
-
-
-
-  // it('gets first repeating character of a given string', function(){
-  //   expect(firstRepeat('sally')).to.eql('l');
-  // });
-
-  
+    expect(typeof firstRepeat === 'object').to.eql(true);
+  });  
 
 });
