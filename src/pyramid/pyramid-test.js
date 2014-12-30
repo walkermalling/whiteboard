@@ -39,9 +39,16 @@ describe('Pyramid',function(){
     expect(p.root.rightChild.leftChild.data).to.eql(5);
   });
 
-  it('should be able to find a node');
+  it('should be able to find the number of possible paths', function () {
+    p.generateFromArray([1,2,3]);
+    p.tracePaths();
+    expect(p.paths.length).to.eql(2);
 
-  it('should be able to find the number of possible paths');
+    var p1 = new Pyramid();
+    p1.generateFromArray([1,2,3,4,5,6]);
+    p1.tracePaths();
+    expect(p1.paths.length).to.eql(4);
+  });
 
   it('should be able to find the path with the smallest sum of nodes');
 

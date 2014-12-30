@@ -6,6 +6,8 @@ var Pyramid = function (data) {
   
   this.root = null;
   this.inserted = 0;
+  this.paths = [];
+  this.mappedPaths = [];
 
   if (data) generateFromArray(data)
 
@@ -13,8 +15,10 @@ var Pyramid = function (data) {
 
 Pyramid.prototype.generateFromArray = function (arr) {
   var data = arr;
-  if (detectNested(data)) 
+
+  if (detectNested(data)){ 
     data = flatten(data);
+  }
 
   for (var k = 0; k < data.length; k++) {
     this.insertNextNumber(data[k]);
@@ -54,82 +58,72 @@ Pyramid.prototype.insertNextNumber = function (number) {
     newNode.leftParent = false;
     newNode.rightParent = false;
     this.root = newNode;
-
     this.inserted++;
-    // console.log('add ' + newNode.data + ' as root');
+  } 
 
-  } else {
-
+  else {
+    // starting with root, find next slot
     var current = this.root;
     insertLoop: while (true) {
 
+      // INSERT as LEFT child of current
       if (current.leftChild === null && current.rightChild === null) {
         newNode.rightParent = current;
         current.leftChild = newNode;
-
         this.inserted++;
-        // console.log('add ' + newNode.data + ' as left child of ' + current.data);
         break insertLoop;
-
-      } else if (current.leftChild !== null && current.rightChild === null) {
+      } 
+      
+      // INSERT as RIGHT child of current
+      else if (current.leftChild !== null && current.rightChild === null) {
         newNode.leftParent = current;
         current.rightChild = newNode;
         this.inserted++;
-        // console.log('add ' + newNode.data + ' as right child of ' + current.data);
-        
-        // if there is a right parent, set as left child of right parent
+
+        // LINK RIGHT PARENT
         if (current.rightParent && current.rightParent.rightChild){
           newNode.rightParent = current.rightParent.rightChild;
           current.rightParent.rightChild.leftChild = newNode;
-        } else {
+        } 
+
+        else {
           newNode.rightParent = false;
         }
 
         break insertLoop;
 
-      } else if (current.leftChild !== null && current.rightChild !== null) {
-        // check for open slots to the right
-        // console.log('checking right siblings');
+      } 
 
+      // check right SIBLINGS for slots
+      else if (current.leftChild !== null && current.rightChild !== null) {
         var rightSibling = false;
 
         if (current.rightParent && current.rightParent.rightChild) {
 
           rightSibling = current.rightParent.rightChild;
 
+          // LOOP
           rightSiblingLoop: while (true) {
-
-            // console.log('entering rightSiblingLoop');
-
-            // check if current right sibling exists and has a right child
-            // NB: no need to check if right sibling has a *left child*
+            
+            // INSERT as right sibling's right child
             if (rightSibling.rightChild === null) {
               newNode.leftParent = rightSibling;
               rightSibling.rightChild = newNode;
               this.inserted++;
-              // console.log('add ' + newNode.data + ' as right child of ' + rightSibling.data);
               break insertLoop;
             }
 
-            // if right parent's right child exists, set that as the next right sibling
+            // if NEXT sibling, check next
             else if (!!rightSibling.rightParent && !!rightSibling.rightParent.rightChild){
               rightSibling = rightSibling.rightParent.rightChild;
-
-              // console.log('looking for another right sibling');
-              // loop again
-            }
-
-            else {
-              // no sibling slots open, look left of current
-              current = current.leftChild;
-
-              // console.log('looking left');
-              break rightSiblingLoop;
             }
 
           }
 
-        } else {
+        } 
+
+        // if no sibling, advance CURRENT to left child
+        else {
           current = current.leftChild;
         }
 
@@ -138,6 +132,61 @@ Pyramid.prototype.insertNextNumber = function (number) {
     }
 
   }
+};
+
+Pyramid.prototype.tracePaths = function () {
+
+  var pathsArray = [];
+
+  function trace (node, path) {
+
+    // recurse LEFT
+    if (!!node.leftChild) {
+      var updatedPath = path.concat([
+        {'direction' : 'left', 'value' : node.data }
+      ]);
+      trace(node.leftChild, updatedPath);
+    }
+
+    // recurse RIGHT
+    if (!!node.rightChild) {
+      var updatedPath = path.concat([
+        {'direction' : 'right', 'value' : node.data }
+      ]);
+      trace(node.rightChild, updatedPath);
+    }
+
+    // register complete PATH
+    if (node.leftChild === null && node.rightChild === null) {
+      pathsArray.push(path);
+    }
+
+  };
+
+  // invoke
+  trace(this.root, []);
+
+  // cache
+  this.paths = pathsArray;
+
+};
+
+Pyramid.prototype.smallestPath = function () {
+  var mapped = this.paths.map(function (path) {
+    var sum = 0;
+    path.forEach(function (node) {
+      sum += node.value;
+    });
+    return {
+      'sum' : sum,
+      'path' : path
+    };
+  });
+  this.mappedPaths = mapped;
+};
+
+Pyramid.prototype.largestPath = function () {
+
 };
 
 module.exports = Pyramid;
