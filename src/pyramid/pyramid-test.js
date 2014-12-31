@@ -40,15 +40,34 @@ describe('Pyramid',function(){
   });
 
   it('should be able to find the number of possible paths', function () {
+    // 2 tier pyramid
     p.generateFromArray([1,2,3]);
     p.tracePaths();
     expect(p.paths.length).to.eql(2);
 
+    // 3 tier pyramid
     var p1 = new Pyramid();
     p1.generateFromArray([1,2,3,4,5,6]);
     p1.tracePaths();
     expect(p1.paths.length).to.eql(4);
   });
+
+  it('each path contains correct number of nodes', function () {
+    // check 2 tier pyramid
+    p.generateFromArray([1,2,3,]);
+    p.tracePaths();
+    p.paths.forEach(function (path) {
+      expect(path.length).to.eql(2);
+    });
+
+    // 3 tier pyramid
+    var p1 = new Pyramid();
+    p1.generateFromArray([1,2,3,4,5,6]);
+    p1.tracePaths();
+    p1.paths.forEach(function (path) {
+      expect(path.length).to.eql(3);
+    });
+  })
 
   it('should be able to find the path with the smallest sum of nodes');
 

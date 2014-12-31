@@ -163,15 +163,15 @@ Pyramid.prototype.tracePaths = function () {
 
   };
 
-  // invoke
-  trace(this.root, []);
+  // invoke with root as first node
+  trace(this.root, [{'direction':'initial','value':this.root.data}]);
 
   // cache
   this.paths = pathsArray;
 
 };
 
-Pyramid.prototype.smallestPath = function () {
+Pyramid.prototype.mapSums = function () {
   var mapped = this.paths.map(function (path) {
     var sum = 0;
     path.forEach(function (node) {
@@ -184,6 +184,10 @@ Pyramid.prototype.smallestPath = function () {
   });
   this.mappedPaths = mapped;
 };
+
+Pyramid.prototype.smallestPath = function () {
+
+}
 
 Pyramid.prototype.largestPath = function () {
 
